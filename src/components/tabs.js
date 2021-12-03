@@ -36,11 +36,10 @@ return topicsDiv;
 
 const tabsAppender = (selector) => {
 
-  const tab = document.querySelector(selector);
 
   axios.get('http://localhost:5000/api/topics')
   .then(res => {
-    tab.appendChild(Tabs(res.data.topics));
+    document.querySelector(selector).appendChild(Tabs(res.data.topics));
   })
   .catch(error => {
     console.error(error)

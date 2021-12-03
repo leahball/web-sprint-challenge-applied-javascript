@@ -1,3 +1,7 @@
+import axios from 'axios';
+
+
+
 const Card = (article) => {
 
 //instantiating elements
@@ -14,15 +18,18 @@ cardHeadline.classList.add('headline');
 author.classList.add('author');
 imageDiv.classList.add('img-container')
 cardHeadline.textContent = article.headline;
-authName.textContent = article.authorName;
+authName.textContent = `By ${article.authorName}`;
 authImage.src = article.authorPhoto;
 
 //create structure
 cardDiv.appendChild(cardHeadline);
 cardDiv.appendChild(author);
 author.appendChild(imageDiv);
+imageDiv.appendChild(authImage);
 author.appendChild(authName);
+
 return cardDiv;
+
 
   // TASK 5
   // ---------------------
@@ -44,7 +51,26 @@ return cardDiv;
   //
 }
 
+
+
 const cardAppender = (selector) => {
+
+  const appendCard = document.querySelector(selector);
+  axios.get('http://localhost:5000/api/articles')
+    .then(res => {
+      // console.log(res.data.articles);
+      const topics = res.data.articles;
+      const keys = Object.keys(topics);
+      keys.forEach(key => {
+        const topic = topics[key];
+        topic.forEach(topic => {
+          appendCard.appendChild(Card(topic));
+        })
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    })
 
 
 
